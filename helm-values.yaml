@@ -1,0 +1,15 @@
+server:
+  ingress:
+    ingressClassName: nginx
+    enabled: true
+    hosts:
+      - id.byulmaru.co
+    tls:
+      - hosts:
+          - id.byulmaru.co
+        secretName: certificate
+
+global:
+  envFrom:
+    - secretRef:
+        name: env

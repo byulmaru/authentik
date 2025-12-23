@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+spec:
+  project: authentik
+  sources:
+    - repoURL: https://charts.goauthentik.io
+      chart: authentik
+      targetRevision: 2025.10.2
+      helm:
+        valueFiles:
+          - $values/helm-values.yaml
+    - repoURL: https://github.com/byulmaru/authentik.git
+      targetRevision: HEAD
+      path: deployment
+      ref: values
+      directory:
+        recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: authentik
+  syncPolicy:
+    automated:
+      enabled: true
+    syncOptions:
+      - CreateNamespace=true
